@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest --verbose --detectOpenHandles --forceExit --runInBand",
+    "test": "npx jest --verbose --detectOpenHandles --forceExit --runInBand --silent",
     "dev": "npx nodemon bin/www"
   },
   "keywords": [],
