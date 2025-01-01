@@ -114,6 +114,32 @@ class Controller {
       next(error);
     }
   }
+
+  static async getProfile(req, res, next) {
+    try {
+      const profile = await Profile.findOne({
+        where: { UserId: req.user.id },
+      });
+      res.status(200).json(profile);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateProfile(req, res, next) {
+    try {
+      const profile = await Profile.update(req.body, {
+        where: { UserId: req.user.id },
+        returning: true,
+      });
+      res.status(200).json({
+        data: profile,
+        message: `Profile updated successfully`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = { Controller };

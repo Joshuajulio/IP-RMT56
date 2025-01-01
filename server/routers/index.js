@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { Controller } = require("../controllers/controller");
-// const { authentication } = require("../middlewares/authentication");
+const { authentication } = require("../middlewares/authentication");
 
 router.get("/", (req, res) => {
   res.json({
@@ -14,12 +14,12 @@ router.post("/ip/register", Controller.register);
 router.post("/ip/createprofile", Controller.createProfile);
 router.post("/ip/login", Controller.login);
 
-// router.use(authentication);
+router.use(authentication);
 
 router.get("/ip/drugs", Controller.getAllDrugs);
 router.get("/ip/drugs/:id", Controller.getDrugById);
-// router.get("/ip/profile/", Controller.getProfile);
-// router.put("/ip/profile/", Controller.updateProfile);
+router.get("/ip/profile/", Controller.getProfile);
+router.put("/ip/profile/", Controller.updateProfile);
 // router.get("/ip/currentdrugs", Controller.getCurrentDrugs);
 // router.post("/ip/currentdrugs", Controller.addCurrentDrugs);
 // router.put("/ip/currentdrugs/:id", Controller.updateCurrentDrugs);
