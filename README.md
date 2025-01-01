@@ -150,6 +150,7 @@ _Response (201 - Created)_
   "familyHistory": "string",
   "foodAllergy": "string",
   "drugAllergy": "string",
+  "recommendation": "string",
   "message": "Profile with name <name> added successfully"
 }
 ```
@@ -278,7 +279,8 @@ _Response (200 - OK)_
   "personalHistory": "string",
   "familyHistory": "string",
   "foodAllergy": "string",
-  "drugAllergy": "string"
+  "drugAllergy": "string",
+  "recommendation": "string"
 }
 ```
 
@@ -324,7 +326,8 @@ _Response (200 - OK)_
     "personalHistory": "string",
     "familyHistory": "string",
     "foodAllergy": "string",
-    "drugAllergy": "string"
+    "drugAllergy": "string",
+    "recommendation": "string"
   },
   "message": "Profile updated successfully"
 }

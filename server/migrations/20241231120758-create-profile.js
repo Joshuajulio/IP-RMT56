@@ -38,6 +38,9 @@ module.exports = {
       drugAllergy: {
         type: Sequelize.TEXT,
       },
+      recommendation: {
+        type: Sequelize.TEXT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
