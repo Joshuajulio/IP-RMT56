@@ -1,0 +1,10 @@
+[
+  {
+    "UserId": "1",
+    "DrugId": "1",
+    "quantity": "1",
+    "drinkTime": "3x",
+    "startDate": "2025-01-01",
+    "endDate": "2025-01-04"
+  }
+]

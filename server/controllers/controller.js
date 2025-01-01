@@ -1,4 +1,4 @@
-const { User, Profile, Drug } = require("../models");
+const { User, Profile, Drug, UserDrug } = require("../models");
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 const { Op } = require("sequelize");
@@ -136,6 +136,107 @@ class Controller {
         data: profile,
         message: `Profile updated successfully`,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getCurrentDrugs(req, res, next) {
+    try {
+      const drugs = await UserDrug.findAll({
+        where: { UserId: req.user.id },
+        include: {
+          model: Drug,
+          attributes: ["id", "name", "imgUrl"],
+        },
+      });
+      res.status(200).json(drugs);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async addCurrentDrugs(req, res, next) {
+    try {
+      const { DrugId, quantity, drinkTime, startDate, endDate } = req.body;
+      const newDrug = await UserDrug.create({
+        UserId: req.user.id,
+        DrugId,
+        quantity,
+        drinkTime,
+        startDate,
+        endDate,
+      });
+      res.status(201).json({
+        id: newDrug.id,
+        UserId: newDrug.UserId,
+        DrugId: newDrug.DrugId,
+        message: `Drug has been added successfully`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateCurrentDrugs(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { quantity, drinkTime, startDate, endDate } = req.body;
+      const drug = await UserDrug.findByPk(id);
+      if (!drug) {
+        throw { name: "NotFound", message: "Drug not found" };
+      }
+      if (drug.UserId !== req.user.id) {
+        throw { name: "Forbidden", message: "You are not authorized" };
+      }
+      await UserDrug.update(
+        { quantity, drinkTime, startDate, endDate },
+        { where: { id } }
+      );
+      res.status(200).json({
+        message: `Drug has been updated successfully`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async deleteCurrentDrugs(req, res, next) {
+    try {
+      const { id } = req.params;
+      const drug = await UserDrug.findByPk(id);
+      if (!drug) {
+        throw { name: "NotFound", message: "Drug not found" };
+      }
+      if (drug.UserId !== req.user.id) {
+        throw { name: "Forbidden", message: "You are not authorized" };
+      }
+      await UserDrug.destroy({ where: { id } });
+      res.status(200).json({
+        message: `Drug has been deleted successfully`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getPastDrugs(req, res, next) {
+    try {
+      const drugs = await UserDrug.findAll({
+        where: {
+          UserId: req.user.id,
+          [Op.or]: [
+            { quantity: { [Op.lte]: 0 } },
+            { endDate: { [Op.lte]: new Date() } },
+          ],
+        },
+        attributes: ["id", "drinkTime", "startDate", "endDate"],
+        include: {
+          model: Drug,
+          attributes: ["id", "name", "imgUrl"],
+        },
+      });
+      res.status(200).json(drugs);
     } catch (error) {
       next(error);
     }

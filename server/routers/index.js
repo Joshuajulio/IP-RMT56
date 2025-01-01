@@ -20,10 +20,10 @@ router.get("/ip/drugs", Controller.getAllDrugs);
 router.get("/ip/drugs/:id", Controller.getDrugById);
 router.get("/ip/profile/", Controller.getProfile);
 router.put("/ip/profile/", Controller.updateProfile);
-// router.get("/ip/currentdrugs", Controller.getCurrentDrugs);
-// router.post("/ip/currentdrugs", Controller.addCurrentDrugs);
-// router.put("/ip/currentdrugs/:id", Controller.updateCurrentDrugs);
-// router.delete("/ip/currentdrugs/:id", Controller.deleteCurrentDrugs);
-// router.get("/ip/pastdrugs", Controller.getPastDrugs);
+router.get("/ip/currentdrugs", Controller.getCurrentDrugs);
+router.post("/ip/currentdrugs", Controller.addCurrentDrugs);
+router.put("/ip/currentdrugs/:id", Controller.updateCurrentDrugs);
+router.delete("/ip/currentdrugs/:id", Controller.deleteCurrentDrugs);
+router.get("/ip/pastdrugs", Controller.getPastDrugs);
 
 module.exports = router;
