@@ -11,11 +11,10 @@ router.get("/", (req, res) => {
 });
 
 router.post("/ip/register", Controller.register);
-router.post("/ip/createprofile", Controller.createProfile);
 router.post("/ip/login", Controller.login);
 
 router.use(authentication);
-
+router.post("/ip/createprofile", Controller.createProfile);
 router.get("/ip/drugs", Controller.getAllDrugs);
 router.get("/ip/drugs/:id", Controller.getDrugById);
 router.get("/ip/profile/", Controller.getProfile);

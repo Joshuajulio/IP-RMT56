@@ -7,6 +7,9 @@ class Controller {
   static async register(req, res, next) {
     try {
       const { email, password } = req.body;
+      if (!password) {
+        throw { name: "BadRequest", message: "Password is required" };
+      }
       const newUser = await User.create({ email, password });
       res.status(201).json({ id: newUser.id, email: newUser.email });
     } catch (error) {
@@ -144,7 +147,13 @@ class Controller {
   static async getCurrentDrugs(req, res, next) {
     try {
       const drugs = await UserDrug.findAll({
-        where: { UserId: req.user.id },
+        where: {
+          UserId: req.user.id,
+          [Op.and]: [
+            { quantity: { [Op.gt]: 0 } },
+            { endDate: { [Op.gte]: new Date() } },
+          ],
+        },
         include: {
           model: Drug,
           attributes: ["id", "name", "imgUrl"],
