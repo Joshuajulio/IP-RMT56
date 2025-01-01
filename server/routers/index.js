@@ -17,7 +17,7 @@ router.post("/ip/login", Controller.login);
 // router.use(authentication);
 
 router.get("/ip/drugs", Controller.getAllDrugs);
-// router.get("/ip/drugs/:id", Controller.getDrugById);
+router.get("/ip/drugs/:id", Controller.getDrugById);
 // router.get("/ip/profile/", Controller.getProfile);
 // router.put("/ip/profile/", Controller.updateProfile);
 // router.get("/ip/currentdrugs", Controller.getCurrentDrugs);

@@ -74,7 +74,9 @@ class Controller {
 
   static async getAllDrugs(req, res, next) {
     try {
-      let options = {};
+      let options = {
+        attributes: ["id", "name", "imgUrl"],
+      };
       const { q, sort, limit, page } = req.query;
       if (q) {
         options.where = {
@@ -99,6 +101,15 @@ class Controller {
         totalData: count,
         totalPage: Math.ceil(count / pageLimit) || 1,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getDrugById(req, res, next) {
+    try {
+      const drug = await Drug.findByPk(req.params.id);
+      res.status(200).json(drug);
     } catch (error) {
       next(error);
     }
