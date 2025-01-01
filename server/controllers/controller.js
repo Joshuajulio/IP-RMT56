@@ -1,6 +1,7 @@
 const { User, Profile, Drug } = require("../models");
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
+const { Op } = require("sequelize");
 
 class Controller {
   static async register(req, res, next) {
@@ -73,8 +74,31 @@ class Controller {
 
   static async getAllDrugs(req, res, next) {
     try {
-      const drugs = await Drug.findAll();
-      res.status(200).json(drugs);
+      let options = {};
+      const { q, sort, limit, page } = req.query;
+      if (q) {
+        options.where = {
+          name: {
+            [Op.iLike]: `%${q}%`,
+          },
+        };
+      }
+      if (sort) {
+        options.order = [["createdAt", sort]];
+      } else {
+        options.order = [["id", "ASC"]];
+      }
+      let pageLimit = limit || 10;
+      let pageNumber = page || 1;
+      options.limit = pageLimit;
+      options.offset = (pageNumber - 1) * pageLimit;
+      const { count, rows } = await Drug.findAndCountAll(options);
+      res.status(200).json({
+        page: pageNumber || 1,
+        data: rows,
+        totalData: count,
+        totalPage: Math.ceil(count / pageLimit) || 1,
+      });
     } catch (error) {
       next(error);
     }
