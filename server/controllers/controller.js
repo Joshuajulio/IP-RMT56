@@ -2,6 +2,7 @@ const { User, Profile, Drug, UserDrug } = require("../models");
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 const { Op } = require("sequelize");
+const pplxRequest = require("../helpers/pplxai");
 
 class Controller {
   static async register(req, res, next) {
@@ -51,14 +52,24 @@ class Controller {
         foodAllergy,
         drugAllergy,
       } = req.body;
+
+      let result = await pplxRequest(
+        JSON.stringify({
+          name,
+          age,
+          personalHistory,
+          familyHistory,
+          foodAllergy,
+          drugAllergy,
+          recommendation: "to be filled here",
+        })
+      );
+
+      let JSONResult = JSON.parse(result);
+
       const newProfile = await Profile.create({
         UserId: req.user.id,
-        name,
-        age,
-        personalHistory,
-        familyHistory,
-        foodAllergy,
-        drugAllergy,
+        ...JSONResult,
       });
       res.status(201).json({
         id: newProfile.id,
@@ -68,6 +79,7 @@ class Controller {
         familyHistory: newProfile.familyHistory,
         foodAllergy: newProfile.foodAllergy,
         drugAllergy: newProfile.drugAllergy,
+        recommendation: newProfile.recommendation,
         message: `Profile with name ${req.body.name} added successfully`,
       });
     } catch (error) {
@@ -131,10 +143,38 @@ class Controller {
 
   static async updateProfile(req, res, next) {
     try {
-      const profile = await Profile.update(req.body, {
-        where: { UserId: req.user.id },
-        returning: true,
-      });
+      const {
+        name,
+        age,
+        personalHistory,
+        familyHistory,
+        foodAllergy,
+        drugAllergy,
+      } = req.body;
+
+      let result = await pplxRequest(
+        JSON.stringify({
+          name,
+          age,
+          personalHistory,
+          familyHistory,
+          foodAllergy,
+          drugAllergy,
+          recommendation: "to be filled here",
+        })
+      );
+
+      let JSONResult = JSON.parse(result);
+      const profile = await Profile.update(
+        {
+          ...JSONResult,
+        },
+        {
+          where: { UserId: req.user.id },
+          returning: true,
+        }
+      );
+
       res.status(200).json({
         data: profile,
         message: `Profile updated successfully`,
