@@ -8,11 +8,17 @@ class Controller {
   static async register(req, res, next) {
     try {
       const { email, password } = req.body;
+      if (!email) {
+        throw { name: "BadRequest", message: "Email is required" };
+      }
       if (!password) {
         throw { name: "BadRequest", message: "Password is required" };
       }
       const newUser = await User.create({ email, password });
-      res.status(201).json({ id: newUser.id, email: newUser.email });
+      const access_token = signToken({ id: newUser.id });
+      res
+        .status(201)
+        .json({ id: newUser.id, email: newUser.email, access_token });
     } catch (error) {
       next(error);
     }
@@ -84,7 +90,7 @@ class Controller {
         familyHistory: newProfile.familyHistory,
         foodAllergy: newProfile.foodAllergy,
         drugAllergy: newProfile.drugAllergy,
-        recommendation: newProfile.recommendation,
+        recommendation: newProfile.recommendation.replaceAll(`"`, ``),
         message: `Profile with name ${req.body.name} added successfully`,
       });
     } catch (error) {
@@ -177,7 +183,7 @@ class Controller {
           familyHistory,
           foodAllergy,
           drugAllergy,
-          recommendation: result,
+          recommendation: result.replaceAll(`"`, ``),
         },
         {
           where: { UserId: req.user.id },

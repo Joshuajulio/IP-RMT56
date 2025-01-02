@@ -181,7 +181,7 @@ function DrugTracking() {
         <div className="space-y-4">
           {pastDrugs.length === 0 ? (
             <div className="text-gray-500 text-left py-4">
-              You haven't consumed any drugs
+              You haven{`'`}t consumed any drugs
             </div>
           ) : (
             pastDrugs.map((drug) => (

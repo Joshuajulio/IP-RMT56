@@ -18,8 +18,9 @@ function Register() {
       console.log(response.data);
       Swal.fire({
         icon: "success",
-        title: "Register Success",
+        title: "Registration Successful",
       });
+      localStorage.setItem("access_token", response.data.access_token);
       navigate("/createprofile");
     } catch (error) {
       console.error(error);
@@ -32,7 +33,7 @@ function Register() {
   };
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      <div className="md:block md:w-1/2 lg:w-3/5 h-screen">
+      <div className="hidden md:block md:w-1/2 lg:w-3/5 h-screen">
         <img
           src="/landing.png"
           alt="landing"

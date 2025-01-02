@@ -20,9 +20,9 @@ function App() {
         <Route element={<UnAuthLayout />}>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/createprofile" element={<CreateProfile />} />
         </Route>
         <Route element={<AuthLayout />}>
-          <Route path="/createprofile" element={<CreateProfile />} />
           <Route element={<NavbarLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
