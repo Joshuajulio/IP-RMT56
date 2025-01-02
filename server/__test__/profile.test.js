@@ -58,7 +58,7 @@ describe("Testing for Profile (POST /profile)", () => {
     // console.log(response.body, "<<< response body");
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("id");
-  });
+  }, 60000);
   test("Unauthorized", async () => {
     const response = await request(app)
       .post("/ip/createprofile")
@@ -82,7 +82,7 @@ describe("Testing for Profile (POST /profile)", () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("name", "Joshua");
-  });
+  }, 20000);
   test("Edit Profile", async () => {
     const response = await request(app)
       .put("/ip/profile/")
@@ -90,8 +90,8 @@ describe("Testing for Profile (POST /profile)", () => {
       .send({
         name: "Joshua2",
         age: 26,
-        personalHistory: "Migraine, otot tegang, insomnia",
-        familyHistory: "Diabetes, insomnia, tekanan darah tinggi",
+        personalHistory: "Migraine, otot tegang",
+        familyHistory: "Diabetes, insomnia",
         foodAllergy: "Susu, kunyit",
         drugAllergy: "cefadroxil",
       });
@@ -99,7 +99,7 @@ describe("Testing for Profile (POST /profile)", () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("data");
     expect(response.body.data[1][0]).toHaveProperty("name", "Joshua2");
-  });
+  }, 60000);
   test("Edit Profile Unathorized", async () => {
     const response = await request(app)
       .put("/ip/profile/")

@@ -64,12 +64,17 @@ class Controller {
           recommendation: "to be filled here",
         })
       );
-
-      let JSONResult = JSON.parse(result);
+      console.log(result);
 
       const newProfile = await Profile.create({
         UserId: req.user.id,
-        ...JSONResult,
+        name,
+        age,
+        personalHistory,
+        familyHistory,
+        foodAllergy,
+        drugAllergy,
+        recommendation: result,
       });
       res.status(201).json({
         id: newProfile.id,
@@ -163,11 +168,16 @@ class Controller {
           recommendation: "to be filled here",
         })
       );
-
-      let JSONResult = JSON.parse(result);
+      console.log(result);
       const profile = await Profile.update(
         {
-          ...JSONResult,
+          name,
+          age,
+          personalHistory,
+          familyHistory,
+          foodAllergy,
+          drugAllergy,
+          recommendation: result,
         },
         {
           where: { UserId: req.user.id },
