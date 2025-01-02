@@ -4,7 +4,7 @@ function UnAuthLayout() {
   const isAuthenticated = localStorage.getItem("access_token");
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/" />;
   } else {
     return <Outlet />;
   }

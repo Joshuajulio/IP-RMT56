@@ -1,5 +1,5 @@
 import axios from "axios";
 
-export const phase2api = axios.create({
-  baseURL: "localhost:3000",
+export const api = axios.create({
+  baseURL: "http://localhost:3000",
 });
