@@ -11,7 +11,9 @@ router.get("/", (req, res) => {
 });
 
 router.post("/ip/register", Controller.register);
+router.post("/ip/register/google", Controller.googleRegister);
 router.post("/ip/login", Controller.login);
+router.post("/ip/login/google", Controller.googleLogin);
 
 router.use(authentication);
 router.post("/ip/createprofile", Controller.createProfile);

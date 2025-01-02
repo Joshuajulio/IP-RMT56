@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../helpers/http-client";
 import { Link, useNavigate } from "react-router";
 
@@ -31,6 +31,36 @@ function Register() {
       });
     }
   };
+
+  async function handleCredentialResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
+
+    try {
+      const { data } = await api.post("/ip/register/google", {
+        googleToken: response.credential,
+      });
+      localStorage.setItem("access_token", data.access_token);
+      navigate("/createprofile");
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+      });
+    }
+  }
+
+  useEffect(() => {
+    google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      callback: handleCredentialResponse,
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("buttonDiv"),
+      { theme: "outline", size: "large" } // customization attributes
+    );
+  }, []);
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <div className="hidden md:block md:w-1/2 lg:w-3/5 h-screen">
@@ -89,6 +119,16 @@ function Register() {
                 </button>
               </div>
             </form>
+
+            <div className="flex items-center justify-center my-4">
+              <div className="flex-grow border-t border-gray-400"></div>
+              <span className="mx-4 text-gray-500">Or</span>
+              <div className="flex-grow border-t border-gray-400"></div>
+            </div>
+
+            <div
+              id="buttonDiv"
+              className="w-full rounded-lg flex justify-center"></div>
 
             <p className="text-black text-center text-xs sm:text-sm">
               Already have an account?{" "}

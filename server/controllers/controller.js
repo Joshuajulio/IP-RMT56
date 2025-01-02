@@ -3,6 +3,9 @@ const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 const { Op } = require("sequelize");
 const pplxRequest = require("../helpers/pplxai");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client();
+require("dotenv").config();
 
 class Controller {
   static async register(req, res, next) {
@@ -48,6 +51,45 @@ class Controller {
     }
   }
 
+  static async googleRegister(req, res, next) {
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: req.body.googleToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      // console.log(payload);
+      const newUser = await User.create({
+        email: payload.email,
+        password: Math.random().toString(),
+      });
+      const access_token = signToken({ id: newUser.id });
+      res
+        .status(201)
+        .json({ id: newUser.id, email: newUser.email, access_token });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async googleLogin(req, res, next) {
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: req.body.googleToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      // console.log(payload);
+      let user = await User.findOne({
+        where: { email: payload.email },
+      });
+      const access_token = signToken({ id: user.id });
+      res.status(200).json({ message: "Login success", access_token });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async createProfile(req, res, next) {
     try {
       const {
@@ -80,7 +122,7 @@ class Controller {
         familyHistory,
         foodAllergy,
         drugAllergy,
-        recommendation: result,
+        recommendation: result.replaceAll(`"`, ``),
       });
       res.status(201).json({
         id: newProfile.id,
@@ -90,7 +132,7 @@ class Controller {
         familyHistory: newProfile.familyHistory,
         foodAllergy: newProfile.foodAllergy,
         drugAllergy: newProfile.drugAllergy,
-        recommendation: newProfile.recommendation.replaceAll(`"`, ``),
+        recommendation: newProfile.recommendation,
         message: `Profile with name ${req.body.name} added successfully`,
       });
     } catch (error) {
