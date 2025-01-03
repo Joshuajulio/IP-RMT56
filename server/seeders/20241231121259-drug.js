@@ -13,7 +13,7 @@ module.exports = {
      * }], {});
      */
     const response = await axios.get(
-      "https://magneto.api.halodoc.com/api/v1/buy-medicine/products/search/%20?page=1&per_page=199"
+      "https://magneto.api.halodoc.com/api/v1/buy-medicine/products/search/%20?page=1&per_page=499"
     );
     //console.log(response.data.result);
     const drugs = response.data.result.map((drug) => drug.slug);
