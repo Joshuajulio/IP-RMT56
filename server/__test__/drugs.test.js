@@ -29,7 +29,7 @@ beforeAll(async () => {
   });
   await queryInterface.bulkInsert("Users", users);
   const user = await User.findOne({
-    where: { email: "joshua@mail.com" },
+    where: { email: "joshua_julio@ymail.com" },
   });
   access_token = signToken({ id: user.id });
   const profiles = require("../data/profile.json").map((el) => {
@@ -42,7 +42,7 @@ beforeAll(async () => {
   });
   await queryInterface.bulkInsert("Profiles", profiles);
   const response = await axios.get(
-    "https://magneto.api.halodoc.com/api/v1/buy-medicine/products/search/%20?page=1&per_page=2"
+    "https://magneto.api.halodoc.com/api/v1/buy-medicine/products/search/%20?page=1&per_page=10"
   );
   const drugs = response.data.result.map((drug) => drug.slug);
   const drugDetails = await Promise.all(
@@ -107,7 +107,7 @@ describe("Testing for Drugs (GET /drugs)", () => {
     // console.log(response.body, "<<< response body");
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("data", expect.any(Array));
-    expect(response.body).toHaveProperty("totalData", 3);
+    expect(response.body).toHaveProperty("totalData", 11);
   });
   test("Success Get Drug By Id", async () => {
     const response = await request(app)

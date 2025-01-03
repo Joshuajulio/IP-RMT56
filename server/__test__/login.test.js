@@ -38,7 +38,7 @@ afterAll(async () => {
 describe("Testing for Login (POST /login)", () => {
   test("Success Login", async () => {
     const response = await request(app).post("/ip/login").send({
-      email: "joshua@mail.com",
+      email: "joshua_julio@ymail.com",
       password: "joshua123",
     });
     // console.log(response.body, "<<< response body");
@@ -54,14 +54,14 @@ describe("Testing for Login (POST /login)", () => {
   });
   test("Password not provided / not inputted", async () => {
     const response = await request(app).post("/ip/login").send({
-      email: "joshua@mail.com",
+      email: "joshua_julio@ymail.com",
     });
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty("message", expect.any(String));
   });
   test("Invalid email / password", async () => {
     const response = await request(app).post("/ip/login").send({
-      email: "joshua@mail.com",
+      email: "joshua_julio@ymail.com",
       password: "joshua12",
     });
     expect(response.status).toBe(401);
