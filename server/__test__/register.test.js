@@ -62,7 +62,7 @@ describe("Testing for Register (POST /register)", () => {
   });
   test("Email already registered", async () => {
     const response = await request(app).post("/ip/register").send({
-      email: "joshua@mail.com",
+      email: "joshua_julio@ymail.com",
       password: "joshua123",
     });
     expect(response.status).toBe(400);

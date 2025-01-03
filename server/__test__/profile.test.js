@@ -28,7 +28,7 @@ beforeAll(async () => {
   });
   await queryInterface.bulkInsert("Users", users);
   const user = await User.findOne({
-    where: { email: "joshua@mail.com" },
+    where: { email: "joshua_julio@ymail.com" },
   });
   access_token = signToken({ id: user.id });
 });
