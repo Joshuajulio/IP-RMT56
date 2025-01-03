@@ -2,8 +2,24 @@
   {
     "UserId": "1",
     "DrugId": "1",
-    "quantity": "1",
+    "quantity": "10",
     "drinkTime": "3x",
+    "startDate": "2025-01-01",
+    "endDate": "2025-01-04"
+  },
+  {
+    "UserId": "1",
+    "DrugId": "10",
+    "quantity": "10",
+    "drinkTime": "2x",
+    "startDate": "2025-01-01",
+    "endDate": "2025-01-04"
+  },
+  {
+    "UserId": "1",
+    "DrugId": "7",
+    "quantity": "4",
+    "drinkTime": "1x",
     "startDate": "2025-01-01",
     "endDate": "2025-01-04"
   }

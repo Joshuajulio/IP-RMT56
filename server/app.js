@@ -33,6 +33,7 @@ app.use(express.json());
 app.use(router);
 
 const cron = require("node-cron");
+cron.tz = "Asia/Jakarta";
 const { User, Drug, UserDrug } = require("./models");
 const { Op } = require("sequelize");
 const sendMail = require("./helpers/sendMail");
