@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 function Login() {
-  const [email, setEmail] = useState("joshua@mail.com");
+  const [email, setEmail] = useState("joshua_julio@ymail.com");
   const [password, setPassword] = useState("joshua123");
 
   const navigate = useNavigate();
@@ -15,6 +15,8 @@ function Login() {
       const response = await api.post("/ip/login", { email, password });
       // console.log(response.data.access_token);
       localStorage.setItem("access_token", response.data.access_token);
+      localStorage.setItem("searchQuery", "");
+      localStorage.setItem("page", 1);
       navigate("/");
     } catch (error) {
       console.error(error);

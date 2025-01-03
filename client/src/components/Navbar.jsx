@@ -9,8 +9,9 @@ function Navbar() {
   const navigate = useNavigate();
   const handleLogout = () => {
     try {
-      localStorage.removeItem("access_token");
+      localStorage.clear();
       navigate("/login");
+      window.location.reload();
     } catch (error) {
       console.error(error);
       Swal.fire({
